@@ -45,10 +45,13 @@ async function getItemsFromServer(url) {
 }
 
 const sortBy = ref('')
-const searchQuery = defineModel()
+const searchQuery = ref('')
 
 const onChangeSelect = (event) => {
   sortBy.value = event.target.value
+}
+const onChangeInput = (event) => {
+  searchQuery.value = event.target.value
 }
 
 // для отображения корзины по клику в шапке и скрытия корзины
@@ -59,7 +62,6 @@ function drawOpenFunc() {
 function drawCloseFunc() {
   drawVisible.value = false
 }
-
 // для отображения избранного по клику в шапке и скрытия
 const favoriteVisible = ref(false)
 function favVisibleFun() {
@@ -89,9 +91,9 @@ onMounted(async () => {
 
 // отслеживаем изменение выбора в выпадающием списке,в поле ввода для поиска
 // и запрашиваем данные с фильтрацией ?title=* и &sortBy=
-watch([sortBy, searchQuery], async () => {
-  getItemsFromServer(urlAllItems + `?title=*${searchQuery.value}&sortBy=${sortBy.value}`)
-})
+watch([sortBy, searchQuery], 
+  getItemsFromServer(`https://bb67c475ee484653.mokky.dev/items?title=*${searchQuery.value}&sortBy=${sortBy.value}`)
+)
 
 // стоимость корзины
 const summ = ref(0)
@@ -155,7 +157,8 @@ provide('favVisible', { favoriteVisible })
           <div class="relative">
             <img src="/search.svg" alt="Search" class="absolute top-3 left-3.5" />
             <input
-              v-model="searchQuery"
+              @input="onChangeInput"
+              type="text"
               placeholder="Поиск..."
               class="text-base border rounded-2xl pl-10 pr-4 py-2 outline-none focus:border-purple-300"
             />

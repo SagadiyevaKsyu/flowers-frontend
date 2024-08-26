@@ -33,11 +33,7 @@ const { favVisible } = inject('favVisible')
         <img src="/heart.svg" alt="Favorite" class="w-5" />
         <p class="text-slate-500 hover:text-slate-950">Избранное</p>
       </li>
-      <!-- профиль -->
-      <li class="flex gap-2 cursor-pointer">
-        <img src="/profile.svg" alt="" class="w-5" />
-        <p class="text-slate-500 hover:text-slate-950">Профиль</p>
-      </li>
+      
     </ul>
   </div>
 </template>

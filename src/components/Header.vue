@@ -1,4 +1,4 @@
-+<script setup>
+<script setup>
 import { inject } from 'vue'
 
 defineProps({

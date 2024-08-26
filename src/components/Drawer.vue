@@ -1,18 +1,37 @@
 <script setup>
-import { inject } from 'vue'
+import { ref, inject } from 'vue'
 import { vOnClickOutside } from '@vueuse/components'
 import CartItemList from './CartItemList.vue'
 import infoBlock from './infoBlock.vue'
 
 const { summ } = inject('sumPrice')
+const { cartItems } = inject('cartItems')
+const { items } = inject('items')
 
 defineProps({
   drawClose: Function
 })
 
-function createOrder(){
+
+const thankForOrder = ref(false)
+
+function add(){
+  items.value = items.value.map((item) => ({
+    ...item,
+    isAdded: false
+  }))
+  cartItems.value = []
+  thankForOrder.value = true
+}
+
+const addToOrder = ref(false)
+
+function onClickToOrder(){
+  addToOrder.value = true
+  setTimeout(add, 2000)
   
 }
+
 </script>
 
 <template>
@@ -46,13 +65,23 @@ function createOrder(){
       <h2 class="text-2xl font-bold">Корзина</h2>
     </div>
 
+    <!-- блок, появляющийся, когда совершена покупка -->
+    <infoBlock class="z-60"
+      v-if="thankForOrder"
+      title="Спасибо за покупку!"
+      description=""
+      img-url="/order-success-icon.png"
+    />
+
     <!-- блок, появляющийся, когда товаров в корзин нет -->
     <infoBlock
-      v-if="summ == 0"
+      v-if="summ == 0 && !thankForOrder"
       title="Корзина пустая :("
       description="Добавьте хотя бы один цветочек в корзину, чтобы оформить заказ"
       img-url="/package-icon.png"
     />
+
+    
 
     <!-- товары корзины -->
     <CartItemList v-if="summ > 0" />
@@ -65,8 +94,8 @@ function createOrder(){
         <b class="text-lg">{{ summ }} руб.</b>
       </div>
       <button
-      @click="createOrder"
-        :disabled="summ == 0 ? '' : disabled"
+      @click="onClickToOrder"
+        :disabled="addToOrder ? '' : disabled"
         class="cursor-pointer bg-orange-400 hover:bg-orange-500 duration-300 disabled:bg-slate-300 active:bg-orange-600 py-4 w-full rounded-3xl mt-5 text-white text-lg"
       >
         Оформить заказ

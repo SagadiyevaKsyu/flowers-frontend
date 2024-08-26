@@ -116,6 +116,7 @@ watch(
   { deep: true }
 )
 
+provide('items', { items })
 provide('sumPrice', { summ })
 provide('cartItems', { cartItems })
 provide('favoriteItems', { favoriteItems })

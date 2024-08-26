@@ -62,6 +62,7 @@ function drawOpenFunc() {
 function drawCloseFunc() {
   drawVisible.value = false
 }
+
 // для отображения избранного по клику в шапке и скрытия
 const favoriteVisible = ref(false)
 function favVisibleFun() {
@@ -91,9 +92,9 @@ onMounted(async () => {
 
 // отслеживаем изменение выбора в выпадающием списке,в поле ввода для поиска
 // и запрашиваем данные с фильтрацией ?title=* и &sortBy=
-watch([sortBy, searchQuery], 
+watch([sortBy, searchQuery], async () => {
   getItemsFromServer(`https://bb67c475ee484653.mokky.dev/items?title=*${searchQuery.value}&sortBy=${sortBy.value}`)
-)
+})
 
 // стоимость корзины
 const summ = ref(0)
